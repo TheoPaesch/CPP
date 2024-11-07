@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Phonebook.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:11:13 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/04 17:31:51 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/07 20:49:22 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ private:
 public:
 	Contact();
 	~Contact();
-	std::string getFirstName() const;
-	std::string getLastName() const;
-	std::string getNickname() const;
-	std::string getPhoneNumber() const;
-	std::string getDarkestSecret() const;
+	std::string&	getFirstName();
+	std::string&	getLastName();
+	std::string&	getNickname();
+	std::string&	getPhoneNumber();
+	std::string&	getDarkestSecret();
 };
 
 class PhoneBook {
@@ -41,7 +41,9 @@ private:
 	int totalContacts;
 
 public:
-
+	PhoneBook();
+	~PhoneBook();
+	void addContact(Contact& contact, PhoneBook& phonebook) ;
 };
 
 #endif

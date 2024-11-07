@@ -3,44 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   GetInfo.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 16:38:27 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/04 16:46:48 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/07 20:15:49 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "phonebook.hpp"
+#include "PhoneBook.hpp"
 
-std::string getFirstName() {
+/*Constructor Destructor*/
+Contact::Contact() {
+	std::cout << "Constuctor - Contact" << std::endl;
+}
+Contact::~Contact() {
+	std::cout << "Destructor - Contact" << std::endl;
+}
+
+std::string&	Contact::getFirstName() {
 	std::string firstName;
 	std::cout << "Enter first name: ";
 	std::cin >> firstName;
 	return firstName;
 }
 
-std::string getLastName() {
+std::string&	Contact::getLastName() {
 	std::string lastName;
 	std::cout << "Enter last name: ";
 	std::cin >> lastName;
 	return lastName;
 }
 
-std::string getNickname() {
+std::string&	Contact::getNickname() {
 	std::string nickname;
 	std::cout << "Enter nickname: ";
 	std::cin >> nickname;
 	return nickname;
 }
 
-std::string getPhoneNumber() {
+std::string&	Contact::getPhoneNumber() {
 	std::string phoneNumber;
 	std::cout << "Enter phone number: ";
 	std::cin >> phoneNumber;
 	return phoneNumber;
 }
 
-std::string getDarkestSecret() {
+std::string&	Contact::getDarkestSecret() {
 	std::string darkestSecret;
 	std::cout << "Enter darkest secret: ";
 	std::cin >> darkestSecret;

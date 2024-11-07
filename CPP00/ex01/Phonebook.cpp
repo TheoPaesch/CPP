@@ -3,18 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   Phonebook.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:11:15 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/04 17:28:38 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/07 20:59:07 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "phonebook.hpp"
+#include "PhoneBook.hpp"
 
-PhoneBook() : currentIndex(0), totalContacts(0) {}
+/*Constructor Destructor*/
+PhoneBook::PhoneBook() {
+	// std::cout << "Constuctor - PhoneBook" << std::endl;
+}
+PhoneBook::~PhoneBook() {
+	// std::cout << "Destructor - PhoneBook" << std::endl;
+}
 
-void addContact(const Contact& contact) {
+/*Constructor Destructor*/
+Contact::Contact(){
+// std::cout << "Constuctor - Contact" << std::endl;
+}
+Contact::~Contact(){
+// std::cout << "Destructor - Contact" << std::endl;
+}
+
+void addContact(Contact contact) {
 	contacts[currentIndex] = contact;
 	currentIndex = (currentIndex + 1) % 8;
 	if (totalContacts < 8) {
@@ -22,7 +36,7 @@ void addContact(const Contact& contact) {
 	}
 }
 
-void displayContacts() const {
+void displayContacts() {
 	for (int i = 0; i < totalContacts; i++) {
 		std::cout << "Contact " << i + 1 << ":" << std::endl;
 		contacts[i].displayContact();
@@ -38,7 +52,7 @@ void setContact(std::string fn, std::string ln, std::string nn, std::string pn, 
 	darkestSecret = ds;
 }
 
-void displayContact() const {
+void displayContact() {
 	std::cout << "First Name: " << firstName << std::endl;
 	std::cout << "Last Name: " << lastName << std::endl;
 	std::cout << "Nickname: " << nickname << std::endl;
@@ -46,7 +60,7 @@ void displayContact() const {
 	std::cout << "Darkest Secret: " << darkestSecret << std::endl;
 }
 
-void addContact(PhoneBook &phoneBook) {
+void addContact(Contact& contact) {
 	std::string firstName = getFirstName();
 	std::string lastName = getLastName();
 	std::string nickname = getNickname();
