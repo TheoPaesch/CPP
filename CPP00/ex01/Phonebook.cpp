@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Phonebook.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:11:15 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/07 20:59:07 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/11 19:55:42 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,7 @@ Contact::~Contact(){
 // std::cout << "Destructor - Contact" << std::endl;
 }
 
-void addContact(Contact contact) {
-	contacts[currentIndex] = contact;
-	currentIndex = (currentIndex + 1) % 8;
-	if (totalContacts < 8) {
-		totalContacts++;
-	}
-}
-
-void displayContacts() {
+void PhoneBook::displayContacts() {
 	for (int i = 0; i < totalContacts; i++) {
 		std::cout << "Contact " << i + 1 << ":" << std::endl;
 		contacts[i].displayContact();
@@ -44,7 +36,7 @@ void displayContacts() {
 	}
 }
 
-void setContact(std::string fn, std::string ln, std::string nn, std::string pn, std::string ds) {
+void Contact::setContact(const std::string& fn,const std::string& ln,const std::string& nn,const std::string &pn,const std::string& ds) {
 	firstName = fn;
 	lastName = ln;
 	nickname = nn;
@@ -52,7 +44,7 @@ void setContact(std::string fn, std::string ln, std::string nn, std::string pn, 
 	darkestSecret = ds;
 }
 
-void displayContact() {
+void Contact::displayContact() {
 	std::cout << "First Name: " << firstName << std::endl;
 	std::cout << "Last Name: " << lastName << std::endl;
 	std::cout << "Nickname: " << nickname << std::endl;
@@ -60,37 +52,23 @@ void displayContact() {
 	std::cout << "Darkest Secret: " << darkestSecret << std::endl;
 }
 
-void addContact(Contact& contact) {
-	std::string firstName = getFirstName();
-	std::string lastName = getLastName();
-	std::string nickname = getNickname();
-	std::string phoneNumber = getPhoneNumber();
-	std::string darkestSecret = getDarkestSecret();
+void PhoneBook::addContact(Contact& contact) {
+	std::string firstName = contact.getFirstName();
+	std::string lastName = contact.getLastName();
+	std::string nickname = contact.getNickname();
+	std::string phoneNumber = contact.getPhoneNumber();
+	std::string darkestSecret = contact.getDarkestSecret();
 
 	Contact newContact;
 	newContact.setContact(firstName, lastName, nickname, phoneNumber, darkestSecret);
-	phoneBook.addContact(newContact);
+	addContact(newContact);
 }
 
-void displayContacts(const PhoneBook &phoneBook) {
-	phoneBook.displayContacts();
-}
-
-void handleUserInput(PhoneBook &phoneBook) {
-	char choice;
-
-	while (true) {
-		std::cout << "Enter 'ADD' to add a contact, 'SEARCH' to display contacts, 'EXIT' to quit: ";
-		std::cin >> choice;
-
-		if (choice == 'a') {
-			addContact(phoneBook);
-		} else if (choice == 'd') {
-			displayContacts(phoneBook);
-		} else if (choice == 'q') {
-			break;
-		} else {
-			std::cout << "Invalid choice. Please try again." << std::endl;
-		}
-	}
+// Display contact information
+void Contact::displayContactInfo() {
+    std::cout << "First Name: " << firstName << std::endl;
+    std::cout << "Last Name: " << lastName << std::endl;
+    std::cout << "Nickname: " << nickname << std::endl;
+    std::cout << "Phone Number: " << phoneNumber << std::endl;
+    std::cout << "Darkest Secret: " << darkestSecret << std::endl;
 }
