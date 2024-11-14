@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:11:13 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/11 19:55:50 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/14 10:29:05 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 #include <iostream>
 #include <string>
+#include <iomanip>
 #include <cctype>
+
 
 /*Classes*/
 
@@ -32,11 +34,12 @@ class Contact {
 		~Contact();
 		void setContact(const std::string& fn, const std::string& ln, const std::string& nn, const std::string& pn, const std::string& ds);
 		void displayContactInfo();
+		void displaySummary(int index);
 		std::string& getFirstName();
-		std::string& Contact::getLastName();
-		std::string& Contact::getNickname();
-		std::string& Contact::getPhoneNumber();
-		std::string& Contact::getDarkestSecret();
+		std::string& getLastName();
+		std::string& getNickname();
+		std::string& getPhoneNumber();
+		std::string& getDarkestSecret();
 };
 
 class PhoneBook {
@@ -48,9 +51,16 @@ class PhoneBook {
 	public:
 		PhoneBook();
 		~PhoneBook();
-		void addContact(Contact& contact);
+		void searchContacts();
+		void ContactIndexCheck(const Contact& contact);
+		void addContact();
 		void displayContacts();
-		void ContactIndexCheck(const Contact& contact)
-	};
+};
+
+
+/*Functions*/
+
+void ContactIndexCheck(const Contact& contact);
+
 
 #endif 

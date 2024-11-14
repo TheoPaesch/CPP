@@ -6,18 +6,18 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:11:15 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/13 17:06:26 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/14 10:45:20 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "PhoneBook.hpp"
+#include "Phonebook.hpp"
 
 /*Constructor Destructor*/
-PhoneBook::PhoneBook() {
-	// std::cout << "Constuctor - PhoneBook" << std::endl;
+PhoneBook::PhoneBook() : currentIndex(0), totalContacts(0) {
+// std::cout << "Constuctor - PhoneBook" << std::endl;
 }
 PhoneBook::~PhoneBook() {
-	// std::cout << "Destructor - PhoneBook" << std::endl;
+// std::cout << "Destructor - PhoneBook" << std::endl;
 }
 
 /*Constructor Destructor*/
@@ -44,16 +44,16 @@ void Contact::setContact(const std::string& fn,const std::string& ln,const std::
 	darkestSecret = ds;
 }
 
-void PhoneBook::addContact(Contact& contact) {
-	std::string firstName = contact.getFirstName();
-	std::string lastName = contact.getLastName();
-	std::string nickname = contact.getNickname();
-	std::string phoneNumber = contact.getPhoneNumber();
-	std::string darkestSecret = contact.getDarkestSecret();
+void PhoneBook::addContact() {
+	std::string firstName = contacts[currentIndex].getFirstName();
+	std::string lastName = contacts[currentIndex].getLastName();
+	std::string nickname = contacts[currentIndex].getNickname();
+	std::string phoneNumber = contacts[currentIndex].getPhoneNumber();
+	std::string darkestSecret = contacts[currentIndex].getDarkestSecret();
 
 	Contact newContact;
 	newContact.setContact(firstName, lastName, nickname, phoneNumber, darkestSecret);
-	addContact(newContact);
+	ContactIndexCheck(newContact);
 }
 
 // Display contact information
@@ -63,4 +63,38 @@ void Contact::displayContactInfo() {
     std::cout << "Nickname: " << nickname << std::endl;
     std::cout << "Phone Number: " << phoneNumber << std::endl;
     std::cout << "Darkest Secret: " << darkestSecret << std::endl;
+}
+
+// Display contact summary for search
+void Contact::displaySummary(int index) {
+	std::cout << std::setw(10) << index << "|";
+	std::cout << std::setw(10) << (firstName.length() > 10 ? firstName.substr(0, 9) + "." : firstName) << "|";
+	std::cout << std::setw(10) << (lastName.length() > 10 ? lastName.substr(0, 9) + "." : lastName) << "|";
+	std::cout << std::setw(10) << (nickname.length() > 10 ? nickname.substr(0, 9) + "." : nickname) << std::endl;
+}
+
+// Search and display contacts in PhoneBook
+void PhoneBook::searchContacts() {
+    std::cout << std::setw(10) << "Index" << "|";
+    std::cout << std::setw(10) << "First Name" << "|";
+    std::cout << std::setw(10) << "Last Name" << "|";
+    std::cout << std::setw(10) << "Nickname" << std::endl;
+    std::cout << "-------------------------------------------" << std::endl;
+
+    for (int i = 0; i < totalContacts; i++) {
+        contacts[i].displaySummary(i + 1);
+    }
+
+    int index;
+    std::cout << "Enter the index of the contact to display: ";
+    std::cin >> index;
+
+    if (std::cin.fail() || index < 1 || index > totalContacts) {
+        std::cin.clear(); // Clear the error flag
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+        std::cout << "Invalid index. Please try again." << std::endl;
+        return;
+    } else {
+        contacts[index - 1].displayContactInfo();
+    }
 }

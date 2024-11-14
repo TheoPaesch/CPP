@@ -1,4 +1,3 @@
-
 # Compiler
 CXX = g++
 
@@ -9,8 +8,10 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 TARGET = PhoneBook
 
 # Source files
-SRCS = PhoneBook.cpp
-	   GetInfo.cpp
+SRCS = Phonebook.cpp \
+	   GetInfo.cpp \
+	   Parsing.cpp \
+	   main.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
@@ -20,10 +21,12 @@ all: $(TARGET)
 
 # Link the object files to create the executable
 $(TARGET): $(OBJS)
+	@echo "Linking object files to create executable..."
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
 
 # Compile source files into object files
 %.o: %.cpp
+	@echo "Compiling $< to $@..."
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Clean up build files

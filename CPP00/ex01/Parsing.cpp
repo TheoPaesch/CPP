@@ -6,11 +6,11 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:21:11 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/11 19:27:47 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/14 10:10:35 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "PhoneBook.hpp"
+#include "Phonebook.hpp"
 
 bool InputCheck(std::string input, int switchCase) {
 	if (input.empty()) {
@@ -45,7 +45,5 @@ bool InputCheck(std::string input, int switchCase) {
 void PhoneBook::ContactIndexCheck(const Contact& contact) {
 	contacts[currentIndex] = contact;
 	currentIndex = (currentIndex + 1) % 8;
-	if (totalContacts < 8) {
-		totalContacts++;
-	}
+	totalContacts++;
 }

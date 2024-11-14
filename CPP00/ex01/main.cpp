@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 17:42:46 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/07 20:34:53 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/14 10:37:32 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "PhoneBook.hpp"
+#include "Phonebook.hpp"
 
 int	main(int argc, char **argv) {
 	PhoneBook		phoneBook;
 	std::string		inputLine;
 
-	void(argv);
+	(void)argv;
 	if (argc != 1)
 	{
 		std::cout << "This crappy PhoneBook takes no arguments!" << std::endl;
@@ -34,9 +34,9 @@ int	main(int argc, char **argv) {
 		std::cout << "Enter one of the commands - ADD,SEARCH or EXIT: ";
 		std::getline(std::cin, inputLine);
 		if (inputLine == "ADD")
-			phoneBook.addOption();
+			phoneBook.addContact();
 		else if (inputLine == "SEARCH")
-			phoneBook.searchOption();
+			phoneBook.searchContacts();
 		else if (inputLine == "EXIT")
 			return (0);
 		else
