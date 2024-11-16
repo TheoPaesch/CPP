@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 19:21:11 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/14 10:10:35 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/14 12:52:29 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ bool InputCheck(std::string input, int switchCase) {
 void PhoneBook::ContactIndexCheck(const Contact& contact) {
 	contacts[currentIndex] = contact;
 	currentIndex = (currentIndex + 1) % 8;
-	totalContacts++;
+	if (totalContacts < 8)
+		totalContacts++;
 }

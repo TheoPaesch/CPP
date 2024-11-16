@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 13:11:15 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/14 10:45:20 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/14 16:16:22 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,17 @@ void Contact::setContact(const std::string& fn,const std::string& ln,const std::
 
 void PhoneBook::addContact() {
 	std::string firstName = contacts[currentIndex].getFirstName();
+	if (std::cin.eof()) 
+		return ;
 	std::string lastName = contacts[currentIndex].getLastName();
+	if (std::cin.eof()) 
+		return ;
 	std::string nickname = contacts[currentIndex].getNickname();
+	if (std::cin.eof()) 
+		return ;
 	std::string phoneNumber = contacts[currentIndex].getPhoneNumber();
+	if (std::cin.eof()) 
+		return ;
 	std::string darkestSecret = contacts[currentIndex].getDarkestSecret();
 
 	Contact newContact;
@@ -89,12 +97,18 @@ void PhoneBook::searchContacts() {
     std::cout << "Enter the index of the contact to display: ";
     std::cin >> index;
 
-    if (std::cin.fail() || index < 1 || index > totalContacts) {
-        std::cin.clear(); // Clear the error flag
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
-        std::cout << "Invalid index. Please try again." << std::endl;
-        return;
-    } else {
-        contacts[index - 1].displayContactInfo();
-    }
+	if (std::cin.eof()) {
+		std::cout << "EOF detected. Returning to main menu." << std::endl;
+		std::cin.clear();
+		return;
+	}
+	else if (std::cin.fail() || index < 1 || index > totalContacts) {
+		std::cin.clear();
+		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+		std::cout << "Invalid index. Back to the lobby." << std::endl;
+		return;
+	} else
+		contacts[index - 1].displayContactInfo();
+	std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
