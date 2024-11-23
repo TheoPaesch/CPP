@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:16:51 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/23 17:33:59 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/23 19:33:50 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,8 @@ Zombie::~Zombie() {
 
 void	Zombie::announce() {
 	std::cout << this->_name << " BraiiiiiiinnnzzzZ..." << std::endl;
+}
+
+void Zombie::setName(std::string name) {
+    this->_name = name;
 }

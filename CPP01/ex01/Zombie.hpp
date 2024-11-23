@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:17:56 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/23 17:30:24 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/23 19:34:58 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ public:
 	Zombie();
 	~Zombie();
 	void	announce();
-	void	setName(std::string name) { this->_name = name; }
+	void	setName(std::string name);
 	static Zombie*	zombieHorde(int N, std::string name);
 
 private:
