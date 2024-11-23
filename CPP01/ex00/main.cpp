@@ -6,11 +6,11 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 19:20:45 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/16 19:53:41 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/11/16 20:21:25 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.h"
+#include "Zombie.hpp"
 
 int	main() {
 	Zombie	*zombie1 = newZombie("Zombie1");
