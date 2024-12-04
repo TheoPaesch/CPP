@@ -6,29 +6,22 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 20:21:22 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/02 20:38:30 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/04 17:09:15 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ScavTrap.hpp"
 
-ScavTrap::ScavTrap() : ClapTrap() {
-	_hitPoints = 100;
-	_energyPoints = 50;
-	_attackDamage = 20;
-}
-
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name) {
 	_hitPoints = 100;
 	_energyPoints = 50;
 	_attackDamage = 20;
+	std::cout << "AAAALAARRMM " << _name << " was constructed!" << std::endl;
 }
 
-ScavTrap::ScavTrap(const ScavTrap& other) {
-	*this = other;
+ScavTrap::~ScavTrap() {
+	std::cout << "AAAALAARRMM " << _name << " was destructed!" << std::endl;
 }
-
-ScavTrap::~ScavTrap() {}
 
 ScavTrap& ScavTrap::operator=(const ScavTrap& other) {
 	if (this != &other) {
