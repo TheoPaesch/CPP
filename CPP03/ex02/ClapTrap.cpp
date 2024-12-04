@@ -6,21 +6,19 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 20:22:49 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/03 19:37:36 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/04 17:05:50 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ClapTrap.hpp"
 
-ClapTrap::ClapTrap() : _hitPoints(10), _energyPoints(10), _attackDamage(0), _name("ClapTrap") {}
-
-ClapTrap::ClapTrap(std::string name) : _hitPoints(10), _energyPoints(10), _attackDamage(0), _name(name) {}
-
-ClapTrap::ClapTrap(const ClapTrap& other) {
-	*this = other;
+ClapTrap::ClapTrap(std::string name) : _hitPoints(10), _energyPoints(10), _attackDamage(0), _name(name) {
+	std::cout << "*Mashine and metal noises* " << _name << " was constructed!" << std::endl;
 }
 
-ClapTrap::~ClapTrap() {}
+ClapTrap::~ClapTrap() {
+	std::cout << "*Mashine and metal noises* " << _name << " was destructed!" << std::endl;
+}
 
 ClapTrap& ClapTrap::operator=(const ClapTrap& other) {
 	if (this != &other) {

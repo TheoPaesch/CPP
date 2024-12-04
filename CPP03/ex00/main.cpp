@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 20:21:29 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/11/28 21:08:31 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/04 16:10:37 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ int main() {
 	clapTrap.attack(clappedTrap._name);
 	clapTrap.takeDamage(10);
 	clapTrap.beRepaired(5);
-
+	
 	return 0;
 }
