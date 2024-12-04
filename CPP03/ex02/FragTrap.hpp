@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   FragTrap.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 20:21:29 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/03 19:36:42 by tpaesch          ###   ########.fr       */
+/*   Created: 2024/12/04 16:25:59 by tpaesch           #+#    #+#             */
+/*   Updated: 2024/12/04 16:36:24 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef FRAGTRAP_HPP
+# define FRAGTRAP_HPP
+
 #include "ScavTrap.hpp"
 
-int main() {
-	ScavTrap scavTrap("ScavTrap");
+class FragTrap : public ClapTrap {
+public:
+	FragTrap();
+	FragTrap(std::string name);
+	FragTrap(const FragTrap& other);
+	~FragTrap();
 
-	scavTrap.attack("target");
-	scavTrap.takeDamage(5);
-	scavTrap.beRepaired(5);
-	scavTrap.guardGate();
-	std::cout << "ScavTrap " << scavTrap.getName() << " has "
-			<< scavTrap.getHitPoints() << " hit points, "
-			<< scavTrap.getEnergyPoints() << " energy points, and "
-			<< scavTrap.getAttackDamage() << " attack damage." << std::endl;
-	return 0;
-}
+	FragTrap& operator=(const FragTrap& other);
+	void highFivesGuys();
+};
+
+#endif
