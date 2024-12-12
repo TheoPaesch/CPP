@@ -5,12 +5,13 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 
 # Target executable
-TARGET = ScavTrapAttack
+TARGET = FragTrapAttack
 
 # Source files
 SRCS = ClapTrap.cpp \
 	   ScavTrap.cpp \
-	   main.cpp 
+	   FragTrap.cpp \
+	   main.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)

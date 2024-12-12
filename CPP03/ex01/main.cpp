@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 20:21:29 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/04 16:23:35 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/12 15:23:04 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ int main() {
 	scavTrap.beRepaired(5);
 	scavTrap.guardGate();
 
-	std::cout << "ClapTrap " << clapTrap._name << " has "
-			<< clapTrap.getHitPoints() << " hit points, "
-			<< clapTrap.getEnergyPoints() << " energy points, and "
-			<< clapTrap.getAttackDamage() << " attack damage." << std::endl;
+	std::cout << "ClapTrap " << clapTrap.getName() << " has "
+			<< "\033[32m" << clapTrap.getHitPoints() << "\033[0m hit points, "
+			<< "\033[34m" << clapTrap.getEnergyPoints() << "\033[0m energy points, and "
+			<< "\033[31m" << clapTrap.getAttackDamage() << "\033[0m attack damage." << std::endl;
 
 	std::cout << "ScavTrap " << scavTrap.getName() << " has "
-			<< scavTrap.getHitPoints() << " hit points, "
-			<< scavTrap.getEnergyPoints() << " energy points, and "
-			<< scavTrap.getAttackDamage() << " attack damage." << std::endl;
+			<< "\033[32m" << scavTrap.getHitPoints() << "\033[0m hit points, "
+			<< "\033[34m" << scavTrap.getEnergyPoints() << "\033[0m energy points, and "
+			<< "\033[31m" << scavTrap.getAttackDamage() << "\033[0m attack damage." << std::endl;
 	return 0;
 }
