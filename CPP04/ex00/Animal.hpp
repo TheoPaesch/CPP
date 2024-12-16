@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:36:14 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/05 18:34:43 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/15 19:52:08 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ public:
 	Animal();
 	Animal(std::string type);
 	Animal(const Animal& other);
-	~Animal();
+	virtual ~Animal();
 
 	Animal& operator=(const Animal& other);
 	std::string getType() const;

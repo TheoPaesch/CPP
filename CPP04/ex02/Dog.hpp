@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:35:47 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/05 17:52:36 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/15 21:35:31 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 class Dog : public Animal {
 private:
 	Brain* _brain;
-	
 public:
 	Dog();
 	Dog(const Dog& other);

@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:36:14 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/05 17:36:37 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/16 02:38:26 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ public:
 
 	Animal& operator=(const Animal& other);
 	std::string getType() const;
-	virtual void makeSound() const = 0;
+	virtual void makeSound() const = 0; // Pure virtual function
 };
 
 #endif
