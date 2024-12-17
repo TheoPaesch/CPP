@@ -12,7 +12,7 @@ SRCS = AMateria.cpp \
 	   Character.cpp \
 	   Cure.cpp \
 	   Ice.cpp \
-	   IMateriaSource.cpp \
+	   MateriaSource.cpp \
 	   main.cpp
 
 # Object files

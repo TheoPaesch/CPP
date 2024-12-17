@@ -6,11 +6,12 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 12:50:36 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/06 13:49:02 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/17 16:16:43 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "AMateria.hpp"
+#include "Colors.hpp"
 
 AMateria::AMateria(std::string const & type) : _type(type) {
 }
@@ -33,9 +34,9 @@ std::string const & AMateria::getType() const {
 }
 
 void AMateria::use(ICharacter& target) {
-	(void)target;
+	std::cout << YELLOW << "* proceedes to roundhousekick " << target.getName() << " with full force *" << RESET << std::endl;
 }
 
-AMateria* AMateria::clone() const {
-	return 0;
-}
+// AMateria* AMateria::clone() const {
+// 	return 0;
+// }

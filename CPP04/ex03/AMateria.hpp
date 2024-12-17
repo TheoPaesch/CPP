@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 12:36:02 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/06 12:39:46 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/17 16:53:31 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 #include <iostream>
 #include "ICharacter.hpp"
+
+#define MAX_MATERIA 4
+
+class ICharacter;
 
 class AMateria
 {
