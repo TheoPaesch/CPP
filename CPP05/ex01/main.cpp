@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:35:54 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/30 21:52:41 by tpaesch          ###   ########.fr       */
+/*   Updated: 2024/12/21 17:52:02 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int main()
 	}
 	try
 	{
-		Bureaucrat b("Bloodclat", 150);
+		Bureaucrat b("bloodclat", 150);
 		std::cout << BRIGHT_GREEN << b;
 		b.decrementGrade();
 		std::cout << BRIGHT_GREEN << b;
