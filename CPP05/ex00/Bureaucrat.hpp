@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 16:58:19 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/21 17:01:13 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/03 21:58:41 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ public:
 	Bureaucrat & operator=(Bureaucrat const & rhs);
 
 	std::string getName() const;
-	int getGrade() const;
+	int getBureaucratGrade() const;
 
 	void incrementGrade();
 	void decrementGrade();

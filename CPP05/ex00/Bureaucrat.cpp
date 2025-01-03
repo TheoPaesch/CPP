@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:33:01 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/21 17:48:08 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/03 21:58:41 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ std::string Bureaucrat::getName() const
 	return _name;
 }
 
-int Bureaucrat::getGrade() const
+int Bureaucrat::getBureaucratGrade() const
 {
 	return _grade;
 }
@@ -74,7 +74,7 @@ const char* Bureaucrat::GradeTooLowException::what() const throw()
 
 std::ostream & operator<<(std::ostream & outp, Bureaucrat const & rhs)
 {
-	outp << rhs.getName() << ", bureaucrat grade " << rhs.getGrade() << std::endl;
+	outp << rhs.getName() << ", bureaucrat grade " << rhs.getBureaucratGrade() << std::endl;
 	return outp;
 }
 
