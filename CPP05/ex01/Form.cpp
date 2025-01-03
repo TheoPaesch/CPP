@@ -6,23 +6,24 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 21:58:05 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/03 20:31:52 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/03 22:14:26 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Form.hpp"
+#include "Bureaucrat.hpp"
 
-Form::Form() : _name("default"), _signed(false), _gradeSign(150), _gradeExec(150) {}
+Form::Form() : _name("default"), _signed(false), _gradeRequiredToSign(150), _gradeRequiredToExecute(150) {}
 
-Form::Form(std::string name, int gradeSign, int gradeExec) : _name(name), _signed(false), _gradeSign(gradeSign), _gradeExec(gradeExec)
+Form::Form(std::string name, int gradeRequiredToSign, int gradeRequiredToExecute) : _name(name), _signed(false), _gradeRequiredToSign(gradeRequiredToSign), _gradeRequiredToExecute(gradeRequiredToExecute)
 {
-	if (gradeSign < 1 || gradeExec < 1)
+	if (gradeRequiredToSign < 1 || gradeRequiredToExecute < 1)
 		throw Form::GradeTooHighException();
-	else if (gradeSign > 150 || gradeExec > 150)
+	else if (gradeRequiredToSign > 150 || gradeRequiredToExecute > 150)
 		throw Form::GradeTooLowException();
 }
 
-Form::Form(Form const & src) : _name(src._name), _signed(src._signed), _gradeSign(src._gradeSign), _gradeExec(src._gradeExec) {}
+Form::Form(Form const & src) : _name(src._name), _signed(src._signed), _gradeRequiredToSign(src._gradeRequiredToSign), _gradeRequiredToExecute(src._gradeRequiredToExecute) {}
 
 Form::~Form() {}
 
@@ -45,16 +46,19 @@ bool Form::getSignatureStatus() const
 	return this->_signed;
 }
 
+int Form::getExecutionGrade() const
+{
+	return this->_gradeRequiredToExecute;
+}
 
 int Form::getSignatureGrade() const
 {
-	return this->_gradeSign;
+	return this->_gradeRequiredToSign;
 }
-
 
 void Form::beSigned(Bureaucrat & b)
 {
-	if (b.getGrade() > this->_gradeSign)
+	if (b.getBureaucratGrade() > this->_gradeRequiredToSign)
 		throw Form::GradeTooLowException();
 	else if (this->_signed == true)
 		throw Form::FormIsSignedException();

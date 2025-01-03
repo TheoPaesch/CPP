@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/30 22:00:22 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/30 22:50:42 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/03 22:24:14 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ private:
 	int const _gradeRequiredToExecute;
 
 public:
-	Form(std::string name, int gradeSign, int gradeExec);
+	Form(std::string name, int gradeRequiredToSign, int gradeRequiredToExecute);
 	Form(Form const & src);
 	~Form();
 
@@ -36,9 +36,10 @@ public:
 
 	std::string getName() const;
 	bool getSignatureStatus() const;
+	int getExecutionGrade() const;
 	int getSignatureGrade() const;
 
-	void beSigned(Bureaucrat & b);
+	void beSigned(class Bureaucrat& b);
 
 	class GradeTooHighException : public std::exception
 	{

@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:33:01 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/30 22:39:40 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/03 22:23:55 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,3 +79,16 @@ std::ostream & operator<<(std::ostream & outp, Bureaucrat const & rhs)
 	return outp;
 }
 
+void Bureaucrat::signForm(Form& form)
+{
+	try
+	{
+		form.beSigned(*this);
+		std::cout << GREEN << _name << "has signed " << form.getName() << RESET << "\n";
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << RED << _name << "couldn't sign " << form.getName() << " because " << e.what() << RESET << "\n";
+		throw;
+	}
+}
