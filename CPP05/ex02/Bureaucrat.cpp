@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:33:01 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/04 00:23:04 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/04 00:23:22 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,3 +93,16 @@ void Bureaucrat::signForm(Form& form)
 	}
 }
 
+void Bureaucrat::executeForm(Form const & form) const
+{
+	try
+	{
+		form.execute(*this);
+		std::cout << GREEN << _name << "executes " << form.getName() << RESET << "\n";
+	}
+	catch (std::exception& e)
+	{
+		std::cerr << RED << _name << "couldn't execute " << form.getName() << " because " << e.what() << RESET << "\n";
+		throw;
+	}
+}
