@@ -3,104 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:35:54 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/04 03:07:51 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/04 06:54:17 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "Bureaucrat.hpp"
 #include "ShrubberyCreationForm.hpp"
 #include "RobotomyRequestForm.hpp"
 #include "PresidentialPardonForm.hpp"
-#include "Colors.hpp"
+#include "Intern.hpp"
 
-#include <cstdlib> // For srand
-#include <cstring> // For strcmp
-#include <ctime>   // For time
+int main() {
+    // Create an intern and a bureaucrat
+    Intern someRandomIntern;
+    Bureaucrat boss("Boss", 1); // Assuming grade 1 is the highest
 
+    try {
+        // Attempt to create each form and have it signed and executed
+        AForm* form1 = someRandomIntern.makeForm("robotomy request", "Bender");
+        std::cout << *form1 << std::endl;
+        boss.signForm(*form1);
+        boss.executeForm(*form1);
 
-void	valid_test()
-{
-	try {
-		Bureaucrat boss("Duck Dimmerdome", 1);
-		Bureaucrat intern("John", 144);
-		// ------------------------------------------------------------------------
-		std::cout << BRIGHT_YELLOW << "\nShrubberyCreationForm" << RESET << std::endl;
+        AForm* form2 = someRandomIntern.makeForm("presidential pardon", "Leela");
+        std::cout << *form2 << std::endl;
+        boss.signForm(*form2);
+        boss.executeForm(*form2);
 
-		ShrubberyCreationForm SCF("garden");
-		intern.signForm(SCF);
-		boss.executeForm(SCF);
-		// ------------------------------------------------------------------------
-		std::cout << BRIGHT_YELLOW << "\nRobotomyRequestForm" << RESET << std::endl;
+        AForm* form3 = someRandomIntern.makeForm("shrubbery creation", "Fry's House");
+        std::cout << *form3 << std::endl;
+        boss.signForm(*form3);
+        boss.executeForm(*form3);
 
-		RobotomyRequestForm RRF("Mark Zuckerberg");
-		boss.signForm(RRF);
-		boss.executeForm(RRF);
-		// ------------------------------------------------------------------------
-		std::cout << BRIGHT_YELLOW << "\nPresidentialPardonForm" << RESET << std::endl;
-
-		PresidentialPardonForm PPF("Evaluator");
-		boss.signForm(PPF);
-		boss.executeForm(PPF);
-	}
-	catch(const std::exception& e) {
-		std::cerr << RED << e.what() << RESET << '\n';
-	}
-}
-
-void	invalid_test()
-{
-	Bureaucrat boss("Duck Dimmerdome", 1);
-	Bureaucrat intern("John", 144);
-	// ------------------------------------------------------------------------
-	std::cout << BRIGHT_RED << "\nNot signed execution" << RESET << std::endl;
-
-	ShrubberyCreationForm SCF("home");
-	try {
-		boss.executeForm(SCF);
-	}
-	catch(const std::exception& e) {
-		std::cerr << RED << e.what() << RESET << '\n';
-	}
-	// ------------------------------------------------------------------------
-	std::cout << BRIGHT_RED << "\nAlready signed" << RESET << std::endl;
-
-	PresidentialPardonForm PPF("Criminal");
-	boss.signForm(PPF);
-	try {
-		boss.signForm(PPF);
-	}
-	catch(const std::exception& e) {
-		std::cerr << RED << e.what() << RESET << '\n';
-	}
-	// ------------------------------------------------------------------------
-	std::cout << BRIGHT_RED << "\nInvalid execution rights" << RESET << std::endl;
-
-	RobotomyRequestForm RRF("Elon Musk");
-	try {
-		boss.signForm(RRF);
-		intern.executeForm(RRF);
-	}
-	catch(const std::exception& e) {
-		std::cerr << RED << e.what() << RESET << '\n';
-	}
-}
-
-int main(int ac, char **av)
-{
-    if (ac > 2) {
-        std::cout << RED << "Only one or no arguments !" << RESET << std::endl;
-        return (1);
+        // Attempt to create a form with an unknown name to test error handling
+        AForm* unknownForm = someRandomIntern.makeForm("unknown form", "Nowhere");
+        if (unknownForm) {
+            boss.signForm(*unknownForm);
+            boss.executeForm(*unknownForm);
+        }
+        if (form1) delete form1;
+        if (form2) delete form2;
+        if (form3) delete form3;
+    } catch (std::exception& e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
-    srand(static_cast<unsigned int>(time(0)));
-    if (ac == 2 && strcmp(av[1], "invalid") == 0)
-        invalid_test();
-    else if (ac == 1)
-        valid_test();
-    else
-        std::cout << RED << "Please enter a valid argument" << RESET << std::endl;
-    return (0);
+
+    return 0;
 }
