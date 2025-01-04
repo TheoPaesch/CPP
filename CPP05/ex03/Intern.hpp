@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 22:59:46 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/03 23:00:17 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/04 06:47:09 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include <iostream>
 # include <string>
 # include "Form.hpp"
+# include "PresidentialPardonForm.hpp"
+# include "RobotomyRequestForm.hpp"
+# include "ShrubberyCreationForm.hpp"
+
 
 class Intern
 {
