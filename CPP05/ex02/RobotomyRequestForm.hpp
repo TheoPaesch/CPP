@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 00:02:47 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/04 02:03:52 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/04 04:49:50 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ class RobotomyRequestForm : public AForm
 {
 private:
 	RobotomyRequestForm();
+	mutable bool _executed;
 	std::string _target;
-	bool _executed;
 
 public:
 	RobotomyRequestForm(std::string target);

@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 00:02:17 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/04 02:04:01 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/04 04:29:16 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ class PresidentialPardonForm : public AForm
 {
 private:
 	PresidentialPardonForm();
+	mutable bool _executed;
 	std::string _target;
-	bool _executed;
 
 public:
 	PresidentialPardonForm(std::string target);
@@ -29,7 +29,6 @@ public:
 	~PresidentialPardonForm();
 
 	PresidentialPardonForm & operator=(PresidentialPardonForm const & rhs);
-
 	void execute(Bureaucrat const & executor) const;
 };
 

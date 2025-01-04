@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/04 01:54:24 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/04 02:03:33 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/04 04:50:12 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ RobotomyRequestForm::~RobotomyRequestForm() {}
 
 RobotomyRequestForm & RobotomyRequestForm::operator=(RobotomyRequestForm const & other)
 {
-	if (this != &rhs)
+	if (this != &other)
 	{
 		this->_target = other._target;
 	}

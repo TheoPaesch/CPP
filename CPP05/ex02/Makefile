@@ -9,10 +9,11 @@ TARGET = FileIt
 
 # Source files
 SRCS = main.cpp \
+	   AForm.cpp \
 	   Bureaucrat.cpp \
 	   PresidentialPardonForm.cpp \
 	   RobotomyRequestForm.cpp \
-	   ShrubberyCreationForm.cpp 
+	   ShrubberyCreationForm.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)

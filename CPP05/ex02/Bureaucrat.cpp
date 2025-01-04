@@ -6,12 +6,12 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 17:33:01 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/04 00:23:22 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/04 03:39:09 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 #include "Colors.hpp"
 
 Bureaucrat::Bureaucrat() : _name("default"), _grade(150) {}
@@ -79,7 +79,7 @@ std::ostream & operator<<(std::ostream & outp, Bureaucrat const & rhs)
 	return outp;
 }
 
-void Bureaucrat::signForm(Form& form)
+void Bureaucrat::signForm(AForm& form)
 {
 	try
 	{
@@ -93,7 +93,7 @@ void Bureaucrat::signForm(Form& form)
 	}
 }
 
-void Bureaucrat::executeForm(Form const & form) const
+void Bureaucrat::executeForm(AForm const & form) const
 {
 	try
 	{
