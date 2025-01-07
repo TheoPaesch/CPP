@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:38:38 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/05 14:27:36 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/07 15:58:48 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ public:
 
 	int identifyYourself(std::string const &input);
 	void convert(std::string const &input);
-	void isChar();
-	void isInt();
-	void isFloat();
-	void isDouble();
+	bool isInt();
+	bool isFloat();
+	bool isDouble();
+
+
 
 private:
 	std::string const _str;
