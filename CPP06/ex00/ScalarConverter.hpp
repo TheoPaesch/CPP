@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ScalarConverter.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/05 11:38:38 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/07 15:58:48 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/07 16:05:13 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ public:
 	bool isInt();
 	bool isFloat();
 	bool isDouble();
-
+	void convertFromChar(const std::string& input);
+	void convertFromDouble(const std::string& input);
+	void convertFromInt(const std::string& input);
+	void convertFromFloat(const std::string& input);
 
 
 private:
