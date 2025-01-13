@@ -5,11 +5,11 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 
 # Target executable
-TARGET = FileIt
+TARGET = TempleRun
 
 # Source files
 SRCS = main.cpp \
-	   ScalarConverter.cpp
+
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)

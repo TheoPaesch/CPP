@@ -9,7 +9,7 @@ TARGET = FileIt
 
 # Source files
 SRCS = main.cpp \
-	   ScalarConverter.cpp
+	   Array.hpp \
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
