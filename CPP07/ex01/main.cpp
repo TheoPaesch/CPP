@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:57:52 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/13 15:26:21 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/14 14:20:41 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,11 @@
 #include "Colors.hpp"
 #include <iostream>
 
+/**
+* @brief Demonstrates the usage of the iter template function with various data types.
+*
+* @return int Exit code.
+*/
 int main() {
 	// Test with an array of integers
 	int intArray[] = {1, 2, 3, 4, 5};
