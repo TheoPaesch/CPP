@@ -5,11 +5,10 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 
 # Target executable
-TARGET = FileIt
+TARGET = ArrayArray
 
 # Source files
 SRCS = main.cpp \
-	   Array.hpp \
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
