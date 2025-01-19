@@ -5,7 +5,7 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 
 # Target executable
-TARGET = Template
+TARGET = StackIT
 
 # Source files
 SRCS = main.cpp 

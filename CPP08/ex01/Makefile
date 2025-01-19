@@ -5,10 +5,11 @@ CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 
 # Target executable
-TARGET = Template
+TARGET = Span
 
 # Source files
-SRCS = main.cpp 
+SRCS = main.cpp \
+	   Span.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
