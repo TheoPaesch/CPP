@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:00:28 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/24 16:35:39 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/24 19:27:27 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 BitcoinExchange::BitcoinExchange() {}
 
 BitcoinExchange::~BitcoinExchange() {}
+
+bool BitcoinExchange::DateValidation(int year, int month, int day);
+bool BitcoinExchange::isValidValue(const std::string& value);
 
 std::unordered_map<std::string, std::string> BitcoinExchange::loadData(const std::string& filename) {
 	std::unordered_map<std::string, std::string> dataMap;
@@ -35,7 +38,13 @@ std::unordered_map<std::string, std::string> BitcoinExchange::loadData(const std
 		std::string key, value;
 
 		if (std::getline(ss, key, ',') && std::getline(ss, value)) {
-			dataMap[key] = value;
+
+			// have to split the date into year, month and day to validate it
+			if (DateValidation(year, month, day) && isValidValue(value)) {
+				dataMap[key] = value;
+			} else {
+				std::cerr << YELLOW << "Invalid entry skipped - Date: " << key << ", Value: " << value << "\n" << RESET;
+			}
 		}
 	}
 
@@ -56,4 +65,18 @@ bool DateValidation(int year, int month, int day) {
 	return (time_out->tm_year == time_in.tm_year &&
 			time_out->tm_mon == time_in.tm_mon &&
 			time_out->tm_mday == time_in.tm_mday);
+}
+
+bool BitcoinExchange::isValidValue(const std::string& value) {
+	try {
+		double val = std::stod(value);
+		if (val < 0 || val > 1000) {
+			return false;
+		}
+	} catch (const std::invalid_argument&) {
+		return false;
+	} catch (const std::out_of_range&) {
+		return false;
+	}
+	return true;
 }
