@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:00:28 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/24 19:27:27 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/27 18:27:52 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,3 +80,18 @@ bool BitcoinExchange::isValidValue(const std::string& value) {
 	}
 	return true;
 }
+
+// Splits a "YYYY-MM-DD" string into year, month, day
+bool validateFileType(const std::string& filename) {
+	if (filename.empty() || (std::string::npos == filename.find_last_of("."))) return false;
+	std::string ext = filename.substr(filename.find_last_of(".") + 1);
+	return ext == "txt";
+}
+
+// Checks if numeric value is within [0,1000] range
+bool isValidValue(double val) {
+	return (val >= 0.0 && val <= 1000.0);
+}
+
+
+void 
