@@ -8,7 +8,8 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 TARGET = btc
 
 # Source files
-SRCS = main.cpp
+SRCS = main.cpp \
+	   BitcoinExchange.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)

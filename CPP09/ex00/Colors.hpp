@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colors.hpp                                         :+:      :+:    :+:   */
+/*   Colors.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 19:00:58 by tpaesch           #+#    #+#             */
-/*   Updated: 2024/12/15 19:05:24 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/01/27 19:02:36 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef COLORS_HPP
 # define COLORS_HPP
 
-#include <iostream>
+# include <iostream>
 
 const std::string RED = "\033[31m";
 const std::string GREEN = "\033[32m";
