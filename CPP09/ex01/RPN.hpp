@@ -1,25 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   RPN.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/24 15:58:49 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/02/11 13:13:33 by tpaesch          ###   ########.fr       */
+/*   Created: 2025/01/31 17:21:02 by tpaesch           #+#    #+#             */
+/*   Updated: 2025/02/11 13:39:00 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RPN.hpp"
-#include "Colors.hpp"
+#ifndef RPN_HPP
+#define RPN_HPP
 
-int main(int argc, char* argv[]) {
-	if (argc != 2) {
-		std::cerr << RED << "Error: invalid arguments" << RESET << std::endl;
-		return 1;
-	}
+#include <iostream>
+#include <stack>
+#include <string>
+#include <sstream>
+#include <iomanip>
+#include <cmath>
 
-	RPN rpn;
-	rpn.processInput(argv[1]);
-	return 0;
-}
+class RPN {
+public:
+	RPN();
+	~RPN();
+
+	bool processInput(const std::string& input);
+
+private:
+	std::stack<double> stack_;
+
+	bool processToken(const std::string& token);
+	void printError(const std::string& msg);
+
+};
+
+#endif

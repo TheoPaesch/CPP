@@ -1,0 +1,20 @@
+"1 2 +" → 3
+"4 2 -" → 2
+"7 3 *" → 21
+"8 2 /" → 4
+"8 9 * 9 - 9 - 9 - 4 - 1 +" → 42
+"7 7 * 7 -" → 42
+"1 2 * 2 / 2 * 2 4 - +" → 0
+"9 9 +" → 18
+"9 0 /" → Error: division by zero
+"0 9 /" → 0
+"1" → Error (stack not reduced to a single value)
+"+ 2 3" → Error (operator before stack is populated)
+"42" → Error (single token but must be < 10 as an input digit)
+"200 200 +" → Error (tokens must be single-digit)
+"1 2 + 3 +" → 6
+"1 1 + /" → Error (operator with insufficient operands)
+"5 5 * 2 / 9 -" → 11 (i.e. (5*5=25), /2=12.5, minus 9=3.5 if the program allowed decimal, but truncated if it uses int. Adjust as needed.)
+"3 3 + 3 +" → 9
+"8 2 / 3 -" → 1
+"(1 + 1)" → Error (parentheses not supported)

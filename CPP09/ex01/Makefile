@@ -8,7 +8,8 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 TARGET = RPN
 
 # Source files
-SRCS = main.cpp
+SRCS = main.cpp \
+	   RPN.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
