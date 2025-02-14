@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 17:20:45 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/02/11 13:38:37 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:22:28 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,18 @@ RPN::RPN() {}
 RPN::~RPN() {}
 
 bool RPN::processInput(const std::string& input) {
+	if (input.empty()) {
+		printError("Empty expression");
+		return false;
+	}
+
 	std::istringstream iss(input);
 	std::string token;
 	while (iss >> token) {
 		if (!processToken(token))
 			return false; // Error occurred, stop execution
 	}
+
 	if (stack_.size() != 1) {
 		printError("Final stack size is not 1.");
 		return false;

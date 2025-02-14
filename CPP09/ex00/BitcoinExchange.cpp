@@ -6,7 +6,7 @@
 /*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:00:28 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/01/27 19:12:00 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/02/14 18:53:55 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,13 @@ bool BitcoinExchange::loadData(const std::string& filename) {
 					double rate = std::stod(rateStr);
 					_rates[date] = rate;
 				}
-				catch (...) {
-					// Invalid rate, skip
+				catch (const std::invalid_argument& e) {
+				// Log invalid argument error
+					std::cerr << "Invalid rate format for date " << date << ": " << rateStr << std::endl;
+				}
+				catch (const std::out_of_range& e) {
+					// Log out of range error
+					std::cerr << "Rate out of range for date " << date << ": " << rateStr << std::endl;
 				}
 			}
 		}
@@ -65,8 +70,11 @@ bool BitcoinExchange::loadData(const std::string& filename) {
 				double rate = std::stod(rateStr);
 				_rates[date] = rate;
 			}
-			catch (...) {
-				// Invalid rate, skip
+			catch (const std::invalid_argument& e) {
+				std::cerr << "Invalid rate format for date " << date << ": " << rateStr << std::endl;
+			}
+			catch (const std::out_of_range& e) {
+				std::cerr << "Rate out of range for date " << date << ": " << rateStr << std::endl;
 			}
 		}
 	}
