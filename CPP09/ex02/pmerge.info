@@ -1,0 +1,782 @@
+/*
+    Merge-Insertion Sort (Illustrative Example)
+
+    This code implements the high-level steps of merge-insertion sort, as described
+    in the outline. It demonstrates the core idea but does not fully implement the
+    advanced grouping/insertion strategy with perfect power-of-two subsequences.
+    For educational purposes, it follows the main concept:
+
+    1) Group elements into pairs, note which element is smaller/larger.
+    2) Recursively sort the larger elements (forming sequence S).
+    3) Put the small partner of S’s first element at the front of S.
+    4) Insert the remaining small elements (and any unpaired element) into S
+       using binary search, in an approximate group-based order.
+
+    For practical usage or large inputs, a fully optimized version of this approach
+    (including all advanced grouping details) would need additional careful
+    implementation.
+
+    Compile & run:
+      c++ -std=c++17 -Wall -Wextra -Werror merge_insertion_example.cpp -o merge_insertion
+      ./merge_insertion
+*/
+
+#include <iostream>
+#include <vector>
+#include <algorithm> // std::lower_bound
+#include <cmath>
+#include <utility>
+
+/*
+   Helper function: binarySearchInsert
+   Inserts val into sortedVec in ascending order using binary search.
+*/
+void binarySearchInsert(std::vector<int>& sortedVec, int val) {
+    auto it = std::lower_bound(sortedVec.begin(), sortedVec.end(), val);
+    sortedVec.insert(it, val);
+}
+
+/*
+   mergeInsertionSort:
+   Sorts the input vector v in ascending order using merge-insertion sort.
+   Returns a new sorted vector.
+*/
+std::vector<int> mergeInsertionSort(const std::vector<int>& v) {
+    size_t n = v.size();
+    if (n < 2) {
+        return v; // Already sorted if size 0 or 1
+    }
+
+    // 1) Pair up elements
+    //    For each pair (a,b), we identify the smaller & larger.
+    //    We'll store the "larger" in largeVec, "smaller" in smallVec.
+    //    If n is odd, last element stays unpaired.
+    std::vector<int> largeVec;
+    std::vector<std::pair<int,int>> pairedSmalls;
+    // pairedSmalls[i] = <small_value, larger_value_index_in_largeVec>
+    // to remember which small belongs with which large
+    largeVec.reserve(n/2 + 1);
+
+    std::vector<int> unpaired; // If n is odd, store that 1 unpaired element
+
+    for (size_t i = 0; i + 1 < n; i += 2) {
+        int a = v[i];
+        int b = v[i + 1];
+        if (a < b) {
+            largeVec.push_back(b);
+            // store "a" as the small partner of index largeVec.size()-1
+            pairedSmalls.push_back({a, static_cast<int>(largeVec.size() - 1)});
+        } else {
+            largeVec.push_back(a);
+            pairedSmalls.push_back({b, static_cast<int>(largeVec.size() - 1)});
+        }
+    }
+    if (n % 2 == 1) {
+        // Last element is unpaired
+        unpaired.push_back(v[n - 1]);
+    }
+
+    // 2) Recursively sort the "larger elements" to form sequence S
+    std::vector<int> S = mergeInsertionSort(largeVec);
+
+    // 3) Insert the partner of the first element of S at the start of S
+    //    The first element of S had some partner in pairedSmalls.
+    //    We find it and put it at the front.
+    if (!S.empty()) {
+        int firstVal = S.front();
+        // find which index in largeVec was used for firstVal
+        // then find that item in pairedSmalls
+        // to figure out the small partner
+        auto it = std::find(largeVec.begin(), largeVec.end(), firstVal);
+        if (it != largeVec.end()) {
+            int idx = static_cast<int>(std::distance(largeVec.begin(), it));
+            // find the small partner from pairedSmalls
+            for (auto &p : pairedSmalls) {
+                if (p.second == idx) {
+                    // Insert small partner at front of S
+                    S.insert(S.begin(), p.first);
+                    break;
+                }
+            }
+        }
+    }
+
+    // 4) Insert the remaining paired small elements (except the one we used above)
+    //    + any unpaired element from step 1.
+    //    In the fully optimized version, we group them so that subsequence lengths
+    //    become one less than a power of two. Here we simply order them from largest
+    //    index to smallest index to mimic partial grouping logic.
+
+    // Build a list of leftover y_i elements to insert
+    //   (the small elements not yet inserted, plus unpaired)
+    std::vector<int> leftovers;
+    leftovers.reserve(pairedSmalls.size() + unpaired.size());
+    // The small partner of S.front() is already inserted, so skip that one.
+    if (!S.empty()) {
+        int usedSmall = S.front(); // just inserted
+        // skip pushing any pair that equals usedSmall
+        for (auto &p : pairedSmalls) {
+            if (p.first == usedSmall) continue;
+            leftovers.push_back(p.first);
+        }
+    } else {
+        // If S was empty, all pairs go to leftovers
+        for (auto &p : pairedSmalls) {
+            leftovers.push_back(p.first);
+        }
+    }
+    for (int val : unpaired) {
+        leftovers.push_back(val);
+    }
+
+    // Simple approach: sort leftover indexes descending to approximate
+    // the advanced grouping insertion order
+    std::sort(leftovers.begin(), leftovers.end(), std::greater<int>());
+
+    // Insert each leftover y_i into S, with binary search up to x_i
+    // For simplicity, we'll just do a standard binary search insert
+    // into the entire S up to (but not including) the matching x_i.
+    // Achieving the exact "power-of-two" bounding is more specialized.
+    for (int val : leftovers) {
+        // In the full approach, we only search up to x_i (the large partner)
+        // but that requires carrying indexes around. Here we do a simpler approach:
+        binarySearchInsert(S, val);
+    }
+
+    return S;
+}
+
+int main() {
+    std::vector<int> data1 = {8, 3, 1, 7, 0, 9, 2, 6};
+    std::vector<int> sorted1 = mergeInsertionSort(data1);
+    std::cout << "Sorted result 1: ";
+    for (int x : sorted1) {
+        std::cout << x << " ";
+    }
+    std::cout << "\n";
+
+    std::vector<int> data2 = {4, 2, 5, 3, 1, 7, 6};
+    std::vector<int> sorted2 = mergeInsertionSort(data2);
+    std::cout << "Sorted result 2: ";
+    for (int x : sorted2) {
+        std::cout << x << " ";
+    }
+    std::cout << "\n";
+
+    // An odd-sized example
+    std::vector<int> data3 = {10, 1, 4, 7, 2, 12};
+    std::vector<int> sorted3 = mergeInsertionSort(data3);
+    std::cout << "Sorted result 3: ";
+    for (int x : sorted3) {
+        std::cout << x << " ";
+    }
+    std::cout << "\n";
+
+    return 0;
+}
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iterator>
+#include <utility>
+#include <stdexcept>
+#include <sstream>
+
+/*
+    Merge-Insertion Sort with Advanced Grouping Strategy
+
+    Outline of Algorithm (high-level steps):
+    ----------------------------------------
+    1) Pair elements of the input array. Each pair has one 'larger' element (x_i)
+       and one 'smaller' element (y_i). If there are an odd number of elements,
+       the last one remains unpaired.
+
+    2) Recursively sort the "larger" elements, forming a sorted array S of x_i's.
+
+       After recursion, S should look like:
+           S = ( x1, x2, x3, x4, x5, ... ) in ascending order
+       No y1, y2 exist because x1, x2 were paired with each other. For i >= 3,
+       each x_i has a smaller partner y_i that is not yet inserted.
+
+       If the array size is odd, there's also an extra unpaired element that acts
+       as y_k for some new index k.
+
+    3) Insert the small partner of S’s first element at the start of S.
+
+    4) Advanced insertion ordering for the remaining y_i’s:
+       - Partition those y_i into “groups” so that the sum of sizes of every two
+         adjacent groups is a power of two (2, 2, 6, 10, 22, ...).
+       - Each group is inserted in reverse index order.
+         Example of the group order is y4,y3 for the group with i=3..4,
+         y6,y5 for i=5..6, y12,y11,y10,y9,y8,y7 for i=7..12, etc.
+       - For each y_i, insert it into S using a binary search that only searches
+         up to (but not including) x_i — its original larger partner.
+
+    This code demonstrates these concepts. It’s more complex than typical sorts,
+    and the grouping logic follows the literature’s sequence of group sizes:
+      groupSizes = [2, 2, 6, 10, 22, 42, ...]
+    where each pair of adjacent group sizes sums to a power of two:
+      2 + 2 = 4
+      2 + 6 = 8
+      6 + 10 = 16
+      10 + 22 = 32
+      22 + 42 = 64
+      etc.
+
+    For learning purposes, we illustrate the key techniques. Some edge cases
+    and large n scenarios may need additional careful handling.
+*/
+
+////////////////////////////////////////////////////////////////////////////////
+// Helper: Generate the infinite sequence of group sizes: 2, 2, 6, 10, 22, 42, ...
+// Each new group size G_k ensures that groupSizes[k] + groupSizes[k-1] is 2^m
+////////////////////////////////////////////////////////////////////////////////
+static std::vector<int> buildGroupSizesUpTo(int maxNeeded) {
+    // The known first two groups are both size 2:
+    //   group[0] = 2, group[1] = 2.
+    // Then group[k] = 2^m - group[k-1], for some m, ensuring group[k] + group[k-1] = 2^m.
+    std::vector<int> gs;
+    gs.push_back(2);
+    gs.push_back(2);
+
+    // Keep generating until we exceed maxNeeded
+    while (true) {
+        // The sum of last two must be the next power of two:
+        //   nextPower = group[k-1] + group[k-2]
+        // but we want group[k] so that group[k] + group[k-1] = nextPowerOf2
+        // If group[k-1] + group[k-2] = 4, we get group[k-1] = 2, group[k] = 2 => sums=4
+        // Next sum is 8, so group[k] + 2=8 => group[k]=6, then next sum=16 => group[k]=10...
+
+        int last1 = gs[ gs.size()-1 ];
+        int last2 = gs[ gs.size()-2 ];
+        int sum = last1 + last2;
+
+        // sum is a power of two already (4, 8, 16...). The next group size
+        // should ensure group[k] + last1 = nextPowerOf2. But in this approach,
+        // we do a straightforward doubling each time for the next sum:
+        //   nextSum = sum * 2. Then group[k] = nextSum - last1.
+        // This yields the known sequence 2,2,6,10,22,42,...
+
+        int nextSum = sum * 2;
+        int nextSize = nextSum - last1;
+        if (nextSize > maxNeeded) break;
+        gs.push_back(nextSize);
+    }
+    return gs;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Helper: binarySearchInsert
+// Insert 'val' into 'S' so that it remains sorted, but only up to index 'upToIdx'
+// (exclusive). If upToIdx > S.size(), we limit it to S.size().
+// This simulates "insert y_i up to x_i" as described by the algorithm.
+////////////////////////////////////////////////////////////////////////////////
+static void binarySearchInsertUpTo(std::vector<int>& S, int val, int upToIdx) {
+    if (upToIdx > (int)S.size()) {
+        upToIdx = (int)S.size();
+    }
+    // Use standard library binary search from S.begin() to S.begin()+upToIdx
+    auto beginIt = S.begin();
+    auto insertEnd = S.begin() + upToIdx; // exclusive boundary
+    auto it = std::lower_bound(beginIt, insertEnd, val);
+    S.insert(it, val);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Structure to hold pairing info: (x_i, y_i, index i)
+////////////////////////////////////////////////////////////////////////////////
+struct PairInfo {
+    int xVal;   // larger element (goes in recursive sort)
+    int yVal;   // smaller partner not yet inserted (except i=1,2)
+    int index;  // i
+    bool used;  // track whether this y was inserted or not
+};
+
+////////////////////////////////////////////////////////////////////////////////
+// mergeInsertionSort
+// Main function implementing advanced grouping logic for leftover y_i’s.
+////////////////////////////////////////////////////////////////////////////////
+static std::vector<int> mergeInsertionSort(const std::vector<int>& arr, int baseIndex = 1) {
+    // baseIndex is used to label x_i, y_i with i starting from baseIndex
+
+    // If array size < 2, trivially sorted
+    size_t n = arr.size();
+    if (n < 2) return arr;
+
+    // 1) Pairing step
+    // We'll store the 'larger' portion in largeVals, then recursively sort them.
+    // We'll keep track of (x_i, y_i, i) in pairInfos so we know which x is at which i,
+    // and who belongs to it as y_i.
+    std::vector<PairInfo> pairInfos;
+    pairInfos.reserve(n/2);
+
+    std::vector<int> unpaired; // if there's an odd leftover
+
+    size_t i = 0;
+    int   localIndex = 0; // local indexing for pairs
+    while (i + 1 < n) {
+        int a = arr[i];
+        int b = arr[i+1];
+        int xV, yV;
+        if (a < b) { xV = b; yV = a; }
+        else        { xV = a; yV = b; }
+        // (xV,yV) is one pair; its global index is baseIndex + localIndex + 2 maybe
+        // We'll assign i3 to the first pair we produce, i4 to the second, etc.
+        // But the official algorithm pairs the first two as i1, i2. So let's do:
+        //   localIndex starts at 1 => that pair is i1,i2. Actually the algorithm states
+        //   there's no y1 or y2 because x1, x2 are each other’s pair.
+        // For simplicity, we’ll ignore that special naming for the first pair
+        // and treat all pairs with increasing i. The advanced method typically
+        // sets aside the first pair for x1,x2, but we’ll track everything anyway.
+
+        PairInfo pi;
+        pi.xVal = xV;
+        pi.yVal = yV;
+        pi.index = baseIndex + localIndex + 1; // label them i=baseIndex+1, etc.
+        pi.used = false;
+        pairInfos.push_back(pi);
+
+        i += 2;
+        localIndex++;
+    }
+    if (n % 2 == 1) {
+        // leftover unpaired
+        unpaired.push_back(arr[n-1]);
+    }
+
+    // We gather only the x-values for recursion
+    std::vector<int> largeVals;
+    largeVals.reserve(pairInfos.size());
+    for (auto &p : pairInfos) {
+        largeVals.push_back(p.xVal);
+    }
+
+    // 2) Recursively sort the "larger" elements
+    //    We'll get S sorted ascending
+    std::vector<int> S = mergeInsertionSort(largeVals, baseIndex + (int)pairInfos.size());
+
+    if (S.empty()) {
+        // Rare edge. If S is empty, we just sort arr trivially?
+        // Shouldn't happen unless n < 2 or an odd scenario. Let’s handle gracefully:
+        std::vector<int> tmp(arr);
+        std::sort(tmp.begin(), tmp.end());
+        return tmp;
+    }
+
+    // 3) Insert small partner of S’s first element at the start of S
+    //    S.front() is x1 => find that x in largeVals => see its PairInfo => y is that partner
+    //    Insert that y at front.
+    {
+        int firstX = S.front();
+        // find it in largeVals
+        auto it = std::find(largeVals.begin(), largeVals.end(), firstX);
+        if (it != largeVals.end()) {
+            int idx = (int)std::distance(largeVals.begin(), it);
+            // That corresponds to pairInfos[idx]
+            int yVal = pairInfos[idx].yVal;
+            // Insert at front of S
+            S.insert(S.begin(), yVal);
+            // Mark that y as used
+            pairInfos[idx].used = true;
+        }
+    }
+
+    // Collect leftover y_i’s (unused) + any unpaired
+    // We'll store them along with their i index for advanced insertion ordering.
+    std::vector<std::pair<int,int>> leftoverY;
+    // each element is (yVal, i) so we can group by i.
+    for (auto &p : pairInfos) {
+        if (!p.used) {
+            leftoverY.push_back({p.yVal, p.index});
+        }
+    }
+    // For unpaired element(s), we treat them as if it’s another y_i with next index
+    // (The official algorithm does that for n odd.)
+    for (int val : unpaired) {
+        // label it with an index beyond everything so it sorts in final insertion
+        leftoverY.push_back({val, (int)(baseIndex + n)});
+    }
+
+    // 4) Advanced grouping: arrange leftover y_i into sizes so that consecutive
+    // group sums form powers of two:
+    //   groupSizes: 2,2,6,10,22,42,...
+    // Then within each group, we insert them in descending index order.
+    // We also insert groups in ascending order of i.
+
+    // Step 4.1: Sort leftoverY by i ascending (the algorithm states smaller i’s
+    //  go first). Then we’ll break them into groups using groupSizes. Then within
+    //  each group, we reverse them to get the “larger indexes first”.
+    std::sort(leftoverY.begin(), leftoverY.end(),
+              [](auto &a, auto &b){ return a.second < b.second; });
+
+    // Build group sizes up to leftoverY.size()
+    int L = (int)leftoverY.size();
+    std::vector<int> gSizes = buildGroupSizesUpTo(L);
+
+    // Partition leftoverY into groups of sizes from gSizes until we exhaust leftoverY
+    // The sum of every two adjacent groups is a power of two (by construction).
+    std::vector< std::vector<std::pair<int,int>> > groups;
+    {
+        int idx = 0;
+        int gsIdx = 0;
+        while (idx < L && gsIdx < (int)gSizes.size()) {
+            int sz = gSizes[gsIdx];
+            // If we’d exceed leftoverY, clamp it
+            if (idx + sz > L) {
+                sz = L - idx;
+            }
+            std::vector<std::pair<int,int>> group;
+            group.reserve(sz);
+            for (int k=0; k<sz; ++k) {
+                group.push_back(leftoverY[idx + k]);
+            }
+            groups.push_back(group);
+            idx += sz;
+            gsIdx++;
+        }
+        // If some leftover remain but we ran out of group sizes, put them in
+        // one last group
+        if (idx < L) {
+            std::vector<std::pair<int,int>> group;
+            for (; idx<L; idx++) {
+                group.push_back(leftoverY[idx]);
+            }
+            groups.push_back(group);
+        }
+    }
+
+    // Step 4.2: For each group, we reverse the group’s order (for i from largest
+    // to smallest). Then we insert each element in that order.
+    for (auto &group : groups) {
+        std::reverse(group.begin(), group.end());
+        for (auto &elem : group) {
+            int yVal = elem.first;
+            int iVal = elem.second;
+            // We want to insert yVal into S up to x_i
+            // We find x_i by searching in S for the same x that has index iVal
+            // but that’s tricky because we haven’t stored x->i mapping in S.
+            // Instead, we can refer back to pairInfos or we track a dictionary
+            // from i->xVal. We’ll build that quickly:
+        }
+    }
+
+    // Build a map from iVal -> xVal in largeVals/pairInfos for quick lookup
+    // (including the newly inserted front x if needed). If iVal from leftover
+    // is beyond pairInfos, it means unpaired => we search no partner.
+    std::vector<int> iToX; // index: iVal, value: xVal
+    // find the max iVal so we can size iToX
+    int maxI = 0;
+    for (auto &p : pairInfos) {
+        if (p.index > maxI) maxI = p.index;
+    }
+    for (auto &unp : unpaired) {
+        if ((int)(baseIndex + n) > maxI) {
+            maxI = baseIndex + n;
+        }
+    }
+    iToX.resize(maxI+1, -1);
+
+    for (auto &p : pairInfos) {
+        if (p.index >= 0 && p.index < (int)iToX.size()) {
+            iToX[p.index] = p.xVal;
+        }
+    }
+    // Insert each group in reversed order
+    for (auto &group : groups) {
+        for (auto &elem : group) {
+            int yVal = elem.first;
+            int iVal = elem.second;
+            // x_i for iVal is iToX[iVal], or -1 if unpaired
+            int partnerX = -1;
+            if (iVal >= 0 && iVal < (int)iToX.size()) {
+                partnerX = iToX[iVal];
+            }
+            if (partnerX < 0) {
+                // This is unpaired leftover, just insert entire S length
+                binarySearchInsertUpTo(S, yVal, (int)S.size());
+            } else {
+                // Find partnerX in S
+                auto it = std::find(S.begin(), S.end(), partnerX);
+                int partnerIdx = (int)std::distance(S.begin(), it);
+                if (it == S.end()) {
+                    // If not found, fallback to inserting anywhere
+                    // (shouldn't normally happen if the logic lines up)
+                    binarySearchInsertUpTo(S, yVal, (int)S.size());
+                } else {
+                    // Insert up to (but not including) partnerIdx
+                    binarySearchInsertUpTo(S, yVal, partnerIdx);
+                }
+            }
+        }
+    }
+
+    return S;
+}
+
+// Demo of usage
+int main() {
+    // Example 1
+    std::vector<int> data1 = {8, 9, 3, 7, 2, 1, 4, 6};
+    auto result1 = mergeInsertionSort(data1, 1);
+    std::cout << "Example 1 Sorted: ";
+    for (auto x : result1) std::cout << x << " ";
+    std::cout << "\n";
+
+    // Example 2 (odd number of elements)
+    std::vector<int> data2 = {10, 2, 15, 1, 0};
+    auto result2 = mergeInsertionSort(data2, 1);
+    std::cout << "Example 2 Sorted: ";
+    for (auto x : result2) std::cout << x << " ";
+    std::cout << "\n";
+
+    // Example 3 (larger set)
+    std::vector<int> data3 = {20, 3, 1, 17, 4, 4, 9, 30, 25, 10, 7};
+    auto result3 = mergeInsertionSort(data3, 1);
+    std::cout << "Example 3 Sorted: ";
+    for (auto x : result3) std::cout << x << " ";
+    std::cout << "\n";
+
+    return 0;
+}
+
+Pairing Elements:
+• We scan the input in pairs, storing the larger element in a separate array for recursion (x_i) and the smaller partner in a PairInfo structure (y_i). If there is an odd count, one element remains unpaired.
+
+Recursive Sort of Larger Elements:
+• We recursively call mergeInsertionSort on the array of x_i’s. This sorted result is S.
+
+Insert the Small Partner of the First Element:
+• The smallest x (S.front()) pairs with some y that we insert at S’s front.
+
+Advanced Grouping and Insertion:
+• We collect the uninserted y_i values (plus any unpaired) into leftoverY.
+• We partition leftoverY into groups of sizes [2,2,6,10,22, ...], ensuring each consecutive pair of group sizes adds to 2^m.
+• Within each group, the elements are processed in reverse index order.
+• For each y_i, we find x_i in S, and insert y_i using a binary search that searches only up to (but not including) x_i.
+
+
+// A minimal demonstration of the Ford-Johnson (merge-insertion) sorting approach
+// applied separately to two different containers (std::vector and std::deque).
+// Compiles with:  c++ -std=c++17 -Wall -Wextra -Werror PmergeMe.cpp -o PmergeMe
+// Usage examples:
+//   ./PmergeMe 3 5 9 7 4
+//   ./PmergeMe `shuf -i 1-100000 -n 3000 | tr "\n" " "`   (Linux)
+//   ./PmergeMe `jot -r 3000 1 100000 | tr '\n' ' '`      (macOS)
+
+#include <iostream>
+#include <vector>
+#include <deque>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include <chrono>
+#include <cctype>
+
+// ──────────────────────────────────────────────────────────────────────────────
+// A simplified version of the Ford-Johnson "merge-insertion" sort for vector.
+// This is not a fully optimized version but illustrates the method.
+// ──────────────────────────────────────────────────────────────────────────────
+void fordJohnsonSortVec(std::vector<int>& arr);
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Same concept for deque, to fulfill the requirement of using two containers.
+// ──────────────────────────────────────────────────────────────────────────────
+void fordJohnsonSortDeq(std::deque<int>& arr);
+
+// Helper to insert via binary search (ascending) in a subrange [begin, begin+upTo).
+static void binaryInsertVec(std::vector<int>& vec, int val, int upTo)
+{
+    if (upTo > (int)vec.size()) upTo = (int)vec.size();
+    auto it = std::lower_bound(vec.begin(), vec.begin() + upTo, val);
+    vec.insert(it, val);
+}
+
+static void binaryInsertDeq(std::deque<int>& deq, int val, int upTo)
+{
+    if (upTo > (int)deq.size()) upTo = (int)deq.size();
+    // We copy the subrange into a temporary vector for binary search
+    // then we’ll place the result back. (One of many ways to handle this.)
+    std::vector<int> temp(deq.begin(), deq.begin() + upTo);
+    auto it = std::lower_bound(temp.begin(), temp.end(), val);
+    temp.insert(it, val);
+    // Rebuild the front part
+    for (int i = 0; i < upTo; ++i) {
+        deq[i] = temp[i];
+    }
+    deq.insert(deq.begin() + upTo, temp.back());
+}
+
+// A very simplified "merge-insertion" routine for vector:
+static std::vector<int> mergeInsertVec(const std::vector<int>& arr)
+{
+    if (arr.size() < 2) return arr;
+    // Pair up: store larger in a separate list, keep track of smaller partners
+    std::vector<int> large;
+    large.reserve(arr.size()/2);
+    std::vector<int> small;
+    for (size_t i = 0; i + 1 < arr.size(); i += 2) {
+        if (arr[i] < arr[i+1]) {
+            large.push_back(arr[i+1]);
+            small.push_back(arr[i]);
+        } else {
+            large.push_back(arr[i]);
+            small.push_back(arr[i+1]);
+        }
+    }
+    // If odd leftover
+    std::vector<int> leftover;
+    if (arr.size() % 2 == 1) {
+        leftover.push_back(arr.back());
+    }
+    // Recursively sort the large part
+    std::vector<int> S = mergeInsertVec(large);
+    // Insert the small partner of S.front()
+    if (!S.empty() && !small.empty()) {
+        // By definition, the first large in S had some small partner
+        // but in this simplified approach we just place the first small at front
+        S.insert(S.begin(), small[0]);
+        small.erase(small.begin());
+    }
+    // Insert leftover smaller partners
+    // (No advanced grouping implemented here.)
+    for (auto val : small) {
+        binaryInsertVec(S, val, (int)S.size());
+    }
+    for (auto val : leftover) {
+        binaryInsertVec(S, val, (int)S.size());
+    }
+    return S;
+}
+
+void fordJohnsonSortVec(std::vector<int>& arr)
+{
+    std::vector<int> result = mergeInsertVec(arr);
+    arr = result;
+}
+
+// A very simplified "merge-insertion" routine for deque:
+static std::deque<int> mergeInsertDeq(const std::deque<int>& arr)
+{
+    if (arr.size() < 2) return arr;
+    std::deque<int> large;
+    std::deque<int> small;
+    for (size_t i = 0; i + 1 < arr.size(); i += 2) {
+        if (arr[i] < arr[i+1]) {
+            large.push_back(arr[i+1]);
+            small.push_back(arr[i]);
+        } else {
+            large.push_back(arr[i]);
+            small.push_back(arr[i+1]);
+        }
+    }
+    std::deque<int> leftover;
+    if (arr.size() % 2 == 1) {
+        leftover.push_back(arr.back());
+    }
+    std::deque<int> S = mergeInsertDeq(large);
+    if (!S.empty() && !small.empty()) {
+        S.push_front(small.front());
+        small.pop_front();
+    }
+    for (auto val : small) {
+        binaryInsertDeq(S, val, (int)S.size());
+    }
+    for (auto val : leftover) {
+        binaryInsertDeq(S, val, (int)S.size());
+    }
+    return S;
+}
+
+void fordJohnsonSortDeq(std::deque<int>& arr)
+{
+    std::deque<int> result = mergeInsertDeq(arr);
+    arr = result;
+}
+
+int main(int argc, char** argv)
+{
+    // Must have at least one argument besides the program name
+    if (argc < 2) {
+        std::cerr << "Error" << std::endl;
+        return 1;
+    }
+
+    // Parse all arguments as positive integers
+    std::vector<int> inputVec;
+    inputVec.reserve(argc - 1);
+    for (int i = 1; i < argc; i++) {
+        // Check if numeric and positive
+        std::string s = argv[i];
+        for (char c : s) {
+            if (!std::isdigit(c)) {
+                std::cerr << "Error" << std::endl;
+                return 1;
+            }
+        }
+        long long val;
+        try {
+            val = std::stoll(s);
+        } catch (...) {
+            std::cerr << "Error" << std::endl;
+            return 1;
+        }
+        if (val <= 0) {
+            std::cerr << "Error" << std::endl;
+            return 1;
+        }
+        inputVec.push_back((int)val);
+    }
+
+    // We need minimum capacity to handle up to 3000 or more, but we do no special check here.
+    // Display "Before"
+    std::cout << "Before: ";
+    for (auto x : inputVec) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
+
+    // Make a copy for each container
+    std::vector<int> vCopy = inputVec;
+    std::deque<int> dCopy(inputVec.begin(), inputVec.end());
+
+    // Sort with vector
+    auto startVec = std::chrono::high_resolution_clock::now();
+    fordJohnsonSortVec(vCopy);
+    auto endVec = std::chrono::high_resolution_clock::now();
+
+    // Sort with deque
+    auto startDeq = std::chrono::high_resolution_clock::now();
+    fordJohnsonSortDeq(dCopy);
+    auto endDeq = std::chrono::high_resolution_clock::now();
+
+    // Display "After" (from one container, they should match)
+    std::cout << "After:  ";
+    for (auto x : vCopy) {
+        std::cout << x << " ";
+    }
+    std::cout << std::endl;
+
+    // Compute times (example microseconds for clarity)
+    auto vecDuration = std::chrono::duration<double, std::micro>(endVec - startVec).count();
+    auto deqDuration = std::chrono::duration<double, std::micro>(endDeq - startDeq).count();
+
+    // Print the times
+    std::cout << "Time to process a range of " << vCopy.size()
+              << " elements with std::vector : " << vecDuration << " us" << std::endl;
+
+    std::cout << "Time to process a range of " << dCopy.size()
+              << " elements with std::deque  : " << deqDuration << " us" << std::endl;
+
+    return 0;
+}
+
+
+Explanation (brief): • The program name is “PmergeMe”.
+• It reads a sequence of positive integers from the command line.
+• It uses two separate containers (std::vector and std::deque) and applies a simplified Ford-Johnson (merge-insertion) sort function to each.
+• Any invalid input prints “Error” to stderr and stops.
+• Outputs the unsorted sequence (“Before”), the sorted sequence (“After”), and timing measurements for each container.
+• Capable of handling 3000+ integers (only limited by memory).

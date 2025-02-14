@@ -8,7 +8,7 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++17
 TARGET = PmergeMe
 
 # Source files
-SRCS = main.cpp
+SRCS = main.cpp PmergeMe.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)
