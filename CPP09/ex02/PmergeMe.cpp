@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpaesch <tpaesch@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tpaesch <tpaesch@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:39:33 by tpaesch           #+#    #+#             */
-/*   Updated: 2025/02/14 19:41:09 by tpaesch          ###   ########.fr       */
+/*   Updated: 2025/02/14 19:57:54 by tpaesch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,63 +94,80 @@ void PmergeMe::insertPend(Container& mainChain, const Container& pendChain) {
 	}
 }
 
-// Core Ford-Johnson (merge-insertion) sorting steps (simplified).
+// Helper: binary insertion for groups (i.e. for nested containers)
+// Compares two groups by their first element.
+template<typename GroupContainer>
+void binaryInsertGroup(GroupContainer& groups, const typename GroupContainer::value_type& group, int pos) {
+    int i = pos - 1;
+    while (i >= 0 && groups[i][0] > group[0]) {
+        groups[i + 1] = groups[i];
+        --i;
+    }
+    groups[i + 1] = group;
+}
+
+// Helper: recursively sort groups (nested containers) using binary insertion,
+// comparing by the first element of each inner container.
+template<typename GroupContainer>
+void fordJohnsonSortGroups(GroupContainer& groups, int left, int right) {
+    if (right - left > 1) {
+        int mid = left + (right - left) / 2;
+        fordJohnsonSortGroups(groups, left, mid);
+        fordJohnsonSortGroups(groups, mid, right);
+        for (int i = mid; i < right; ++i) {
+            binaryInsertGroup(groups, groups[i], i);
+        }
+    }
+}
+
+// Updated Ford–Johnson sort that recursively groups pairs.
 template<typename Container>
 void PmergeMe::fordJohnsonSort(Container& container, int left, int right) {
-	// If the range is too small, nothing to do
-	if (right - left <= 1)
-		return;
-
-	// 1. Split into pairs (b, a) recursively
-	//    For brevity, we operate on the whole container here.
-	std::vector<Container> pairs;
-	Container subContainer(container.begin() + left, container.begin() + right);
-	buildPairs(subContainer, pairs);
-
-	// 2. Recursively sort higher-level pairs if possible (pairs of pairs, etc.)
-	//    In a more complete solution, you'd group pairs again and call
-	//    fordJohnsonSort on those subgroups. This is a simplified placeholder.
-	//    For example:
-	//    if (pairs.size() > 1) {
-	//        // Create larger "pairs of pairs" and recurse
-	//    }
-
-	// 3. Build main (first b and all a's) and pend (remaining b's)
-	Container mainChain;
-	Container pendChain;
-	// For simplicity, assume pairs[0] is b1, a1; others are b2.., a2.. etc.
-	if (!pairs.empty()) {
-		// mainChain starts with b1
-		if (!pairs[0].empty())
-			mainChain.push_back(pairs[0][0]);
-		// also add a1 if it exists
-		if (pairs[0].size() > 1)
-			mainChain.push_back(pairs[0][1]);
-	}
-
-	// fill mainChain with all other 'a' and pendChain with all other 'b'
-	for (size_t i = 1; i < pairs.size(); i++) {
-		if (pairs[i].size() == 2) {
-			// (b, a) both exist
-			pendChain.push_back(pairs[i][0]); // b
-			mainChain.push_back(pairs[i][1]); // a
-		} else {
-			// odd leftover case: treat as b alone
-			pendChain.push_back(pairs[i][0]);
-		}
-	}
-
-	// 4. Insert pend elements into main using the special approach:
-	//    - Possibly use Jacobsthal-based ordering
-	//    - Bound comparisons with known 'a' elements
-	insertPend(mainChain, pendChain);
-
-	// 5. Copy sorted result back into container
-	//    The final mainChain should be in ascending order if the full steps
-	//    (including deeper recursion) are done.
-	for (size_t i = 0; i < mainChain.size(); i++) {
-		container[left + i] = mainChain[i];
-	}
+    // Base case: one or no elements to sort.
+    if (right - left <= 1)
+        return;
+    
+    // 1. Build pairs from the subrange.
+    std::vector<Container> pairs;
+    Container subContainer(container.begin() + left, container.begin() + right);
+    buildPairs(subContainer, pairs);
+    
+    // 2. If more than one pair exists, recursively sort the groups (pairs)
+    //    by comparing their first element.
+    if (pairs.size() > 1) {
+        // Recursively sort the vector of groups (pairs)
+        fordJohnsonSortGroups(pairs, 0, pairs.size());
+    }
+    
+    // 3. Build the mainChain and pendChain:
+    Container mainChain;
+    Container pendChain;
+    if (!pairs.empty()) {
+        // Start mainChain with first element (b) of the first pair.
+        if (!pairs[0].empty())
+            mainChain.push_back(pairs[0][0]);
+        // If available, append the second element (a) of the first pair.
+        if (pairs[0].size() > 1)
+            mainChain.push_back(pairs[0][1]);
+    }
+    // For subsequent pairs, treat the first element as pend (b) and the second as main (a).
+    for (size_t i = 1; i < pairs.size(); i++) {
+        if (pairs[i].size() == 2) {
+            pendChain.push_back(pairs[i][0]); // b
+            mainChain.push_back(pairs[i][1]); // a
+        } else {
+            // In case of an odd leftover, it's a b element.
+            pendChain.push_back(pairs[i][0]);
+        }
+    }
+    
+    // 4. Insert elements from pendChain into mainChain.
+    insertPend(mainChain, pendChain);
+    
+    // 5. Copy the sorted mainChain back into the original container.
+    for (size_t i = 0; i < mainChain.size(); i++) {
+        container[left + i] = mainChain[i];
+    }
 }
 
 template<typename Container>
